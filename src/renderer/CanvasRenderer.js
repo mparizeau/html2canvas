@@ -34,18 +34,22 @@ export default class CanvasRenderer implements RenderTarget<HTMLCanvasElement> {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     options: RenderOptions;
+    customCanvas: boolean;
 
     constructor(canvas: ?HTMLCanvasElement) {
         this.canvas = canvas ? canvas : document.createElement('canvas');
+        this.customCanvas = !!canvas;
     }
 
     render(options: RenderOptions) {
         this.ctx = this.canvas.getContext('2d');
         this.options = options;
-        this.canvas.width = Math.floor(options.width * options.scale);
-        this.canvas.height = Math.floor(options.height * options.scale);
-        this.canvas.style.width = `${options.width}px`;
-        this.canvas.style.height = `${options.height}px`;
+        if (!this.customCanvas) {
+            this.canvas.width = Math.floor(options.width * options.scale);
+            this.canvas.height = Math.floor(options.height * options.scale);
+            this.canvas.style.width = `${options.width}px`;
+            this.canvas.style.height = `${options.height}px`;
+        }
 
         this.ctx.scale(this.options.scale, this.options.scale);
         this.ctx.translate(-options.x, -options.y);
