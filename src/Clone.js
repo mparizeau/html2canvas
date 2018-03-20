@@ -312,6 +312,12 @@ export class DocumentCloner {
                 case 'SELECT':
                     clone.value = node.value;
                     break;
+                case 'INPUT':
+                    if (node.checked) {
+                        // required for IE9 and 10
+                        clone.setAttribute('checked', true);
+                    }
+                    break;
             }
         }
         return clone;
